@@ -1,0 +1,83 @@
+<html>
+<head>
+<script src="stereogram.js"></script>
+
+</head>
+<body>
+<table>
+<tr><td>
+<select onchange="displayRDS()" id="objectselector">
+<option value="depthMaps/3gear.jpg">Tricycle</option>
+<option value="depthMaps/B52.jpg">B52 Fighter Plane</option>
+<option value="depthMaps/Bee2.jpg">Honey Bee</option>
+<option value="depthMaps/Bio.jpg">Bio</option>
+<option value="depthMaps/Dino.jpg">Dino</option>
+<option value="depthMaps/Doldemo.jpg">Doldemo</option>
+<option value="depthMaps/Gitara.jpg">Gitara</option>
+<option value="depthMaps/Globe.jpg">Globe</option>
+<option value="depthMaps/Izba3.jpg">Izba3</option>
+<option value="depthMaps/Kruh.jpg">Kruh</option>
+<option value="depthMaps/Panak.jpg">Panak</option>
+<option value="depthMaps/Retazka.jpg">Retazka</option>
+<option value="depthMaps/Socha2.jpg">Socha2</option>
+<option value="depthMaps/Stolicka.jpg">Stolicka</option>
+<option value="depthMaps/Struna.jpg">Struna</option>
+<option value="depthMaps/Teapot.jpg">Teapot</option>
+<option value="depthMaps/Telo2.jpg">Telo2</option>
+<option value="depthMaps/Valec.jpg">Valec</option>
+<option value="depthMaps/Ventil.jpg">Ventil</option>
+<option value="text">Text</option>
+
+</select></td><td><select onchange="displayRDS()" id="patternselector">
+<option value="texturePatterns/TREE.jpg">Trees</option>
+<option value="texturePatterns/FIAL.jpg">Fial</option>
+<option value="texturePatterns/ZELENA.jpg">Zelena</option>
+<option value="texturePatterns/ZELENA2.jpg">Zelena2</option>
+<option value="texturePatterns/RANDOM2.jpg">Random2</option>
+<option value="texturePatterns/RAND4.jpg">Random4</option>
+<option value="texturePatterns/RAND7.jpg">Random7</option>
+</select></td></tr>
+<tr><td>
+<div id="currentObj"></div></td><td></td>
+</tr>
+</table>
+<input type="text" id="inptext" value="Hello" />
+<div id="disp" width="40" height="40" align=center></div>
+
+</body>
+
+<script>
+
+function displayRDS(){
+var texture = new Image();
+texture.onload=function(){
+var depthMap = new Image();
+depthMap.onload = function(){
+    
+    var sgram = StereogramGenerator.generateTexturedSIRD(
+				depthMap,texture,
+				800, 600,
+				14, 3,
+				12, 0,				
+				72,72);
+	document.getElementById('disp').innerHTML="";
+	document.getElementById('disp').appendChild(sgram);	
+	
+	depthMap.height=100;
+	depthMap.width =100;
+document.getElementById('currentObj').innerHTML=""
+	document.getElementById('currentObj').appendChild(depthMap);	
+}
+if(document.getElementById('objectselector').value!="text"){
+depthMap.src='images/'+document.getElementById('objectselector').value;
+} else {
+depthMap.src=ImageManipulator.generateTextDepthMap(document.getElementById('inptext').value,150,800,600).toDataURL();;
+}
+
+
+}
+texture.src='images/'+document.getElementById('patternselector').value;
+}
+displayRDS();
+</script>
+</html>
